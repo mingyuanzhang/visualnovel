@@ -1,0 +1,164 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Nicer default font */
+    overflow: hidden; /* Prevent accidental scrolling */
+    background-color: #333; /* Dark background outside game area */
+}
+
+#game-container {
+    position: relative; /* Needed for absolute positioning of children */
+    width: 100%;
+    height: 100%;
+    max-width: 1024px; /* Common VN width */
+    max-height: 576px; /* 16:9 aspect ratio */
+    margin: auto; /* Center the container */
+    background-color: #000; /* Fallback background inside game area */
+    overflow: hidden; /* Keep contents within bounds */
+    border: 2px solid #555; /* Optional border */
+
+    /* Center vertically using flexbox on parent (if needed) or transform */
+    position: absolute; /* Use absolute for centering */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#background-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover; /* Scale image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Default background - *** REPLACE THIS *** */
+    background-image: url('images/default_background.png');
+    transition: background-image 0.5s ease-in-out; /* Smooth background change */
+}
+
+#character-layer {
+    position: absolute;
+    bottom: 120px; /* Adjust based on text box height */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    height: 75%; /* Max height for sprite */
+    display: flex; /* Use flex to help center image if needed */
+    align-items: flex-end; /* Align sprite to the bottom of this container */
+    justify-content: center;
+    transition: opacity 0.4s ease-in-out; /* Smooth fade */
+}
+
+#character-layer img {
+    max-height: 100%; /* Ensure sprite fits */
+    max-width: 100%;
+    object-fit: contain; /* Maintain aspect ratio */
+    display: block; /* Remove extra space below image */
+}
+
+#ui-layer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* Height is determined by its content + padding */
+    padding: 15px; /* Padding around UI */
+    box-sizing: border-box;
+}
+
+#character-name-box {
+    position: absolute;
+    top: -5px; /* Position slightly overlapping the text box */
+    left: 30px; /* Indent from left edge */
+    background-color: rgba(40, 40, 80, 0.85); /* Dark blueish tint */
+    color: #e0e0ff; /* Light purple text */
+    padding: 6px 18px;
+    border-radius: 8px 8px 0 0; /* Rounded top corners */
+    font-weight: bold;
+    font-size: 1.1em;
+    border: 1px solid rgba(100, 100, 150, 0.7);
+    border-bottom: none; /* No bottom border */
+}
+
+#text-box {
+    width: 100%; /* Take full width within ui-layer padding */
+    min-height: 100px; /* Minimum height */
+    background-color: rgba(10, 10, 20, 0.8); /* Darker, slightly blue background */
+    color: #f0f0f0; /* Off-white text */
+    padding: 20px;
+    padding-top: 25px; /* Extra top padding if name box overlaps */
+    border-radius: 8px;
+    border: 1px solid rgba(100, 100, 150, 0.7);
+    overflow-y: auto; /* Scroll if text overflows */
+    box-sizing: border-box; /* Include padding in width/height */
+    margin-bottom: 15px; /* Space before choices */
+    font-size: 1.15em; /* Slightly larger text */
+    line-height: 1.5; /* Better readability */
+}
+
+#dialogue {
+    margin: 0;
+}
+
+#choices-box {
+    display: flex;
+    flex-direction: column; /* Stack choices vertically */
+    align-items: center; /* Center buttons */
+    gap: 10px; /* Space between buttons */
+    width: 100%; /* Use full width */
+    padding-bottom: 10px; /* Extra space at bottom */
+}
+
+#choices-box button {
+    padding: 12px 25px;
+    font-size: 1.05em;
+    background-color: #505080; /* Muted purple */
+    color: white;
+    border: 1px solid #7070a0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    min-width: 250px; /* Minimum button width */
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#choices-box button:hover {
+    background-color: #656595; /* Lighter purple on hover */
+    transform: translateY(-1px); /* Slight lift effect */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+#choices-box button:active {
+    transform: translateY(0px); /* Press down effect */
+    background-color: #454570;
+}
+
+
+/* Add this rule to your style.css file */
+#choices-box button.selected-choice {
+    /* Example styling: */
+    outline: 3px solid #6fafff; /* A bright blue outline */
+    outline-offset: 2px;
+    box-shadow: 0 0 10px rgba(111, 175, 255, 0.7); /* Optional glow */
+    background-color: #656595; /* Match hover color or make distinct */
+}
+
+/* Optional: Style for when button is focused AND selected */
+#choices-box button.selected-choice:focus {
+     /* Keep the custom outline, remove default browser focus ring if desired */
+    outline: 3px solid #6fafff;
+}
+
+/* Ensure default focus doesn't clash if you don't use .focus() in JS */
+#choices-box button:focus {
+    outline: none; /* Or style default focus differently */
+}
+
+/* Utility class to hide elements smoothly */
+.hidden {
+    opacity: 0 !important;
+    pointer-events: none; /* Prevent interaction while hidden */
+}
